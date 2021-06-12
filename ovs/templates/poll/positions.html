@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Positions{% endblock %}
+{%block body %}
+ <h2>Available Position For Vote</h2>
+  <ul>
+    {% for i in obj %}
+      <li><button type="button" class="btn btn-primary  btn-lg mt-3" ><a href="{% url 'candidate_view' i.id%}" style="text-decoration: none;color:white">{{i.title}}</a></button></li>
+    {% empty %}
+      <p>No Positions Available</p>
+    {% endfor %}
+    <img src="media/images/ev2.jpg" width="1000" height="1000" class="img-fluid" align="middle">
+  </ul>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% load static %}
+{%block body%}
+  {% if user.is_authenticated %}
+     <div class="alert alert-success" role="alert">
+       Welcome {{request.user.get_full_name}}
+     </div>
+ <div class="d-grid gap-4 col-5">
+   <form action="positions" method="post">
+     {%csrf_token%}
+   <button class="btn btn-primary btn-lg " type="submit">Click Here to Vote </a></button>
+   </form>
+</div>
+  <div class="d-grid gap-4 col-5 mt-3">
+   <form action="result" method="post">
+     {%csrf_token%}
+   <button class="btn btn-primary btn-lg " type="submit">Click Here to see results</a></button>
+   </form>
+</div>
+<img src="media/images/ev2.jpg" width="1800" height="1000" class="img-fluid">
+   {% else %}
+<div class="alert alert-warning" role="alert">
+       Welcome to E_Voting System. This web aaplication allows you to vote for the small organizatiton.
+     </div>
+<img src="media/images/ev2.jpg" width="1800" height="1000" class="img-fluid">
+
+  {% endif %}
+{% endblock %}

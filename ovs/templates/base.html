@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" rel="stylesheet">
+
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'home' %}">E_Voting System</a>
+    <button aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+            data-target="#navbarNavAltMarkup" data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav mr-2">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href='#' id="navbarDropdown"
+                       role="button"> Welcome {{request.user.get_full_name }}</a>
+                    <div aria-labelledby="navbarDropdown" class="dropdown-menu">
+                        <a class="dropdown-item" href="/logout">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        {% else %}
+        <!-- Button to  trigger Login modal -->
+        <button class="btn btn-primary mr-2" data-target="#login" data-toggle="modal" type="button">Login</button>
+        <button class="btn btn-primary mr-2" data-target="#register" data-toggle="modal" type="button">SignUp</button>
+        {% endif %}
+    </div>
+    </div>
+</nav>
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+    <strong>Hey, </strong> {{ message }}
+    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+<!-- SignUp Modal -->
+<div aria-hidden="true" aria-labelledby="register" class="modal fade" id="register" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registertitle">Register Here</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/register" method='post'>
+                    <div class="form-group">
+                        <label for="username">Enter Aadhaar</label>
+                        <input class="form-control" id="username" maxlength="12" name="username" pattern="[1-9]{1}[0-9]{11}"
+                               placeholder="12 digit aadhaar number " required type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="First_name">First Name</label>
+                        <input class="form-control" id="First_name" name="First_name" placeholder="Enter Your First Name"
+                               type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="Last_name">Last Name</label>
+                        <input class="form-control" id="Last_name" name="Last_name" placeholder="Enter Your Last Name"
+                               type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input class="form-control" id="email" name="email" placeholder="name@example.com" type="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label name="dob">Select your DOB(Date Of Birth)</label>
+                        <input class="form-control" id="dob" name="dob" placeholder="02-12-2000 only 18+" type="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pass1">Choose a password</label>
+                        <input class="form-control" id="pass1" name="pass1" placeholder="Choose Your Password"
+                               type="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="pass2">Confirm Password</label>
+                        <input class="form-control" id="pass2" name="pass2" placeholder="Enter your password again"
+                               type="password">
+                    </div>
+
+
+                    {% csrf_token %}
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+{% block body %} {% endblock body %}
+
+<!-- Login Modal -->
+<div aria-hidden="true" aria-labelledby="login" class="modal fade" id="login" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginTitle">Login Here</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/login" method="post">
+                    <div class="form-group">
+                        {%csrf_token%}
+                        <label for="username">Enter Aadhaar</label>
+                        <input class="form-control" id="loginusername" maxlength="12" name="loginusername" placeholder="Enter your Aadhaar"
+                               type="text">
+                    </div>
+                    <div class="form-group">
+
+                        <label for="loginpassword">Enter your password </label>
+                        <input class="form-control" id="loginpassword" name="loginpassword" placeholder="Enter your password "
+                               type="password">
+                    </div>
+
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+            <div class="container">
+                {% block content %}
+                {% endblock %}
+            </div>
+
+            <!-- Optional JavaScript -->
+            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+            <script crossorigin="anonymous"
+                    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+                    src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script crossorigin="anonymous"
+                    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+                    src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+            <script crossorigin="anonymous"
+                    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+                    src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
